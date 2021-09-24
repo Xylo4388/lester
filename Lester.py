@@ -13,6 +13,10 @@ import requests
 from collections.abc import Sequence
 from discord import Client
 import DiscordUtils
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 bot = commands.Bot(command_prefix=["!"], help_command=None)
 
@@ -22,7 +26,7 @@ async def is_owner(ctx):
 
 @bot.event
 async def on_ready():
-    await bot.change_presence(status=discord.Status.online, activity=discord.Game("Made with Love by Xylo and Daniel071 `!help`"))
+    await bot.change_presence(status=discord.Status.online, activity=discord.Game("with Females."))
 
 @bot.command()
 async def dm(ctx):
@@ -50,7 +54,7 @@ async def compliment(ctx):
 async def help(ctx):
     print("sending help message to", (ctx.author.name))
     embed1=discord.Embed(title="Help Page 1", description='Use the prefix "!" to use them!')
-    embed1.set_author(name="Version: v1.0.0", url="https://github.com/Xylo4388")
+    embed1.set_author(name="Version: v1.0.2", url="https://github.com/Xylo4388")
     embed1.add_field(name="!help", value="Shows this list of commands.", inline=False)
     embed1.add_field(name="!dm", value="Creates a dm with ~ Yours truly. Lester", inline=False)
     embed1.add_field(name="!yt or !youtube", value="Sends a link to the Authors YouTube Channel.", inline=False)
@@ -162,6 +166,12 @@ async def on_message(ctx):
                 *gives cookies*
                 """
                 await ctx.channel.send(cookies)
+            if "virus" in ctx.content.lower():
+                virus = """
+                safe halal download ﷽ click free safe virus approved बहुत सुरक्षित और अच्छा
+                http://www.5z8.info/peepshow_rctw
+                """
+                await ctx.channel.send(virus)
             if "cake" in ctx.content.lower():
                 cake = """
                 *gives cake*
@@ -181,4 +191,4 @@ async def on_command_error(ctx, error):
         await ctx.channel.send(":flushed: Looks like <@569334038326804490> f*cked up something again. Pls spam his DMs so he fixes it!!")
         await ctx.channel.send("```{error}```".format(error=error))
 
-bot.run('ODE2MTUxMDAwNjczOTQzNjEz.YD2x2Q.Q0C3L_SGyEVkh1GlXlu4dGHSj9U')
+bot.run(os.getenv('TOKEN'))
