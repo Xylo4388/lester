@@ -18,7 +18,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-bot = commands.Bot(command_prefix=["!"], help_command=None)
+bot = commands.Bot(command_prefix=["l."], help_command=None)
 
 async def is_owner(ctx):
     return ctx.author.id == 569334038326804490
@@ -53,23 +53,23 @@ async def compliment(ctx):
 @bot.command()
 async def help(ctx):
     print("sending help message to", (ctx.author.name))
-    embed1=discord.Embed(title="Help Page 1", description='Use the prefix "!" to use them!')
-    embed1.set_author(name="Version: v1.0.2", url="https://github.com/Xylo4388")
-    embed1.add_field(name="!help", value="Shows this list of commands.", inline=False)
-    embed1.add_field(name="!dm", value="Creates a dm with ~ Yours truly. Lester", inline=False)
-    embed1.add_field(name="!yt or !youtube", value="Sends a link to the Authors YouTube Channel.", inline=False)
-    embed1.add_field(name="!support", value="Gives you a link to our Discord server for support.", inline=False)
-    embed1.add_field(name="!daddy", value="You'll see :stuck_out_tongue_winking_eye:", inline=False)
-    embed1.add_field(name="!roast", value="Roasts you.", inline=False)
-    embed1.add_field(name="!compliment", value="Compliments you.", inline=False)
+    embed1=discord.Embed(title="Help Page 1", description='Use the prefix "l." to use them!')
+    embed1.set_author(name="Version: v1.0.3", url="https://github.com/Xylo4388")
+    embed1.add_field(name="l.help", value="Shows this list of commands.", inline=False)
+    embed1.add_field(name="l.dm", value="Creates a dm with ~ Yours truly. Lester", inline=False)
+    embed1.add_field(name="l.yt or !youtube", value="Sends a link to the Authors YouTube Channel.", inline=False)
+    embed1.add_field(name="l.support", value="Gives you a link to our Discord server for support.", inline=False)
+    embed1.add_field(name="l.daddy", value="You'll see :stuck_out_tongue_winking_eye:", inline=False)
+    embed1.add_field(name="l.roast", value="Roasts you.", inline=False)
+    embed1.add_field(name="l.compliment", value="Compliments you.", inline=False)
 
     embed2=discord.Embed(title="Help Page 2", description='Use the prefix "!" to use them!')
-    embed2.set_author(name="Version: v1.0.0", url="https://github.com/Xylo4388")
-    embed2.add_field(name="!github", value="Gives the link to the authors GitHub", inline=False)
-    embed2.add_field(name="!shut", value="Turns me off :wink:", inline=False)
-    embed2.add_field(name="!restart", value="Will turn you on.", inline=False)
-    embed2.add_field(name="!cook", value="I am at your service, m'lady.", inline=False)
-    embed2.add_field(name="!stats", value="Will check YouTube stats (CURRENTLY BROKEN)", inline=False)
+    embed2.set_author(name="Version: v1.0.3", url="https://github.com/Xylo4388")
+    embed2.add_field(name="l.github", value="Gives the link to the authors GitHub", inline=False)
+    embed2.add_field(name="l.shut", value="Turns me off :wink:", inline=False)
+    embed2.add_field(name="l.restart", value="Will turn you on.", inline=False)
+    embed2.add_field(name="l.cook", value="I am at your service, m'lady.", inline=False)
+    embed2.add_field(name="l.stats", value="Will check YouTube stats (CURRENTLY BROKEN)", inline=False)
 
 
     paginator = DiscordUtils.Pagination.CustomEmbedPaginator(ctx)
