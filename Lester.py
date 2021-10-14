@@ -8,7 +8,7 @@ from discord import Client, Intents, Embed
 from discord_slash import SlashCommand, SlashContext
 import sys
 import os
-import base64
+import base64 
 import time
 import json
 import requests
@@ -19,6 +19,7 @@ import DiscordUtils
 from dotenv import load_dotenv
 import random
 
+<<<<<<< HEAD
 load_dotenv()
 #
 # def get_prefix(client,message):
@@ -26,6 +27,9 @@ load_dotenv()
 #         prefixes = json.load(f)
 #
 #     return prefix[str(message.guild.id)]
+=======
+load_dotenv() 
+>>>>>>> 5c919bf6c785c936a66a571101db6d515bec16d3
 
 bot = commands.Bot(command_prefix=["l.", "L."], help_command=None)
 slash = SlashCommand(bot)
@@ -51,6 +55,7 @@ async def on_ready():
 @bot.command()
 async def help(ctx):
     print("sending help message to", (ctx.author.name))
+
     embed1=discord.Embed(title="Help Page 1", description='Use the prefix "l." to use them!')
     embed1.set_author(name="Version: v1.0.3", url="https://github.com/Xylo4388")
     embed1.add_field(name="l.help", value="Shows this list of commands.", inline=False)
@@ -74,7 +79,6 @@ async def help(ctx):
     embed3.set_author(name="Version: v1.0.3", url="https://github.com/Xylo4388")
     embed3.add_field(name="l.scan (link)", value="(Coming in v1.0.4)", inline=False)
     embed3.add_field(name="l.info {User ID}", value="Will tell you when a member joined your server", inline=False)
-
 
     paginator = DiscordUtils.Pagination.CustomEmbedPaginator(ctx)
     paginator.add_reaction('⬅', "back")
