@@ -8,7 +8,7 @@ from discord import Client, Intents, Embed
 from discord_slash import SlashCommand, SlashContext
 import sys
 import os
-import base64 
+import base64
 import time
 import json
 import requests
@@ -19,7 +19,6 @@ import DiscordUtils
 from dotenv import load_dotenv
 import random
 
-<<<<<<< HEAD
 load_dotenv()
 #
 # def get_prefix(client,message):
@@ -27,9 +26,6 @@ load_dotenv()
 #         prefixes = json.load(f)
 #
 #     return prefix[str(message.guild.id)]
-=======
-load_dotenv() 
->>>>>>> 5c919bf6c785c936a66a571101db6d515bec16d3
 
 bot = commands.Bot(command_prefix=["l.", "L."], help_command=None)
 slash = SlashCommand(bot)
@@ -60,7 +56,7 @@ async def help(ctx):
     embed1.set_author(name="Version: v1.0.3", url="https://github.com/Xylo4388")
     embed1.add_field(name="l.help", value="Shows this list of commands.", inline=False)
     embed1.add_field(name="l.dm", value="Creates a dm with ~ Yours truly. Lester", inline=False)
-    embed1.add_field(name="l.yt or !youtube", value="Sends a link to the Authors YouTube Channel.", inline=False)
+    embed1.add_field(name="l.yt or l.youtube", value="Sends a link to the Authors YouTube Channel.", inline=False)
     embed1.add_field(name="l.support", value="Gives you a link to our Discord server for support.", inline=False)
     embed1.add_field(name="l.daddy", value="You'll see :stuck_out_tongue_winking_eye:", inline=False)
     embed1.add_field(name="l.roast", value="Roasts you.", inline=False)
@@ -72,13 +68,14 @@ async def help(ctx):
     embed2.add_field(name="l.shut", value="Turns me off :wink:", inline=False)
     embed2.add_field(name="l.restart", value="Will turn you on.", inline=False)
     embed2.add_field(name="l.cook", value="I am at your service, m'lady.", inline=False)
-    embed2.add_field(name="l.stats", value="Will check YouTube stats (CURRENTLY BROKEN)", inline=False)
+    embed2.add_field(name="l.stats", value="Will check YouTube stats (Coming Soon)", inline=False)
     embed2.add_field(name="l.sus", value="Sends a suspicious message :wink:", inline=False)
 
     embed3=discord.Embed(title="Help Page 3", description='Use the prefix "l." to use them!')
     embed3.set_author(name="Version: v1.0.3", url="https://github.com/Xylo4388")
-    embed3.add_field(name="l.scan (link)", value="(Coming in v1.0.4)", inline=False)
+    embed3.add_field(name="l.scan (link)", value="Will scan a link to check if it's suspicious (Coming Soon)", inline=False)
     embed3.add_field(name="l.info {User ID}", value="Will tell you when a member joined your server", inline=False)
+    embed3.add_field(name="l.mclive", value="Will update you about the most recent Minecraft Live", inline=False)
 
     paginator = DiscordUtils.Pagination.CustomEmbedPaginator(ctx)
     paginator.add_reaction('⬅', "back")
@@ -99,20 +96,50 @@ async def help(ctx):
 #     with open("prefixes.json", "w") as f:
 #         json.dump(prefixes,f)
 
-@bot.event
-async def on_message(ctx, msg):
-    if msg.mentions[0] == 816151000673943613:
-        await ctx.channel.send("My prefix is l.")
+# @bot.event
+# async def on_message(ctx, msg):
+#     if msg.mentions[0] == 816151000673943613:
+#         await ctx.channel.send("My prefix is l.")
 
 @bot.command()
-async def dm(ctx):
-    await ctx.channel.send("Creating dm with {name}".format(name=ctx.author.name))
-    print("Started direct message")
-    channel = await ctx.author.create_dm()
-    print(channel)
-    print(ctx.author)
-    await channel.send("heyy")
-    await channel.send("are you a female")
+@commands.cooldown(1,60,commands.BucketType.user)
+async def dm(ctx, user: discord.User):
+    if user:
+        await ctx.channel.send("Creating dm with {name}".format(name=user.name))
+        print("Started direct message")
+
+        epicUser = await user.create_dm()
+        await epicUser.send("heyy")
+        await epicUser.send("are you a female")
+
+    else:
+        await ctx.channel.send("Creating dm with {name}".format(name=ctx.author.name))
+        print("Started direct message")
+
+        channel = await ctx.author.create_dm()
+        await channel.send("heyy")
+        await channel.send("are you a female")
+
+@bot.command(aliases=['minecraftlive', 'MinecraftLive', 'mclive'])
+async def mcl(ctx):
+    print("sending Minecraft Live 2021 message to", (ctx.author.name))
+    await ctx.channel.send("""
+    Minecraft Live 2021 was about the 1.19 update!
+The 1.19 update is going to be called the 'Wild Update'!
+    In this update, they are going to be adding:
+        Frogs
+        Boats with Chests
+        Renewable Clay
+        Mud Blocks
+        Fireflies
+        Updating Swamps
+        The Deep Dark (The Warden and its Dungeon)
+        The Allay (Winner of the Mob Vote in Minecraft Live 2021)
+        Tadpoles
+        Bedrock Edition and Java Edition to the Xbox Game Pass
+
+More info can be found at: https://www.minecraft.net/en-us/article/minecraft-live-2021-the-recap
+    """)
 
 # @bot.command()
 # async def scan(ctx, arg):
@@ -134,6 +161,7 @@ async def dm(ctx):
 
 @bot.command()
 async def info(ctx, *, member: discord.Member):
+    print("sending info message to", (ctx.author.name))
     fmt = '{0} joined {0.guild.name} on {0.joined_at} and has {1} role(s).'
     await ctx.send(fmt.format(member, len(member.roles)-1))
 
@@ -144,6 +172,7 @@ async def info_error(ctx, error):
 
 @bot.command()
 async def sus(ctx):
+    print("sending a suspicious message to", (ctx.author.name))
     if ctx.author.id != bot.user.id:
         copypasta2 = ("Did someone say sus 😱😱😱 HOLY FUCKING SHIT‼️‼️‼️‼️ IS THAT A MOTHERFUCKING AMONG US REFERENCE??????!!!!!!!!!!11!1!1!1!1!1!1! 😱😱😱😱😱😱😱 AMONG US IS THE BEST FUCKING GAME 🔥🔥🔥🔥💯💯💯💯 RED IS SO SUSSSSS 🕵️🕵️🕵️🕵️🕵️🕵️🕵️🟥🟥🟥🟥🟥 COME TO MEDBAY AND WATCH ME SCAN 🏥🏥🏥🏥🏥🏥🏥🏥 🏥🏥🏥🏥 WHY IS NO ONE FIXING O2 🤬😡🤬😡🤬😡🤬🤬😡🤬🤬😡 OH YOUR CREWMATE? NAME EVERY TASK 🔫😠🔫😠🔫😠🔫😠🔫😠 Where Any sus!❓ ❓ Where!❓ ❓ Where! Any sus!❓ Where! ❓ Any sus!❓ ❓ Any sus! ❓ ❓ ❓ ❓ Where!Where!Where! Any sus!Where!Any sus Where!❓ Where! ❓ Where!Any sus❓ ❓ Any sus! ❓ ❓ ❓ ❓ ❓ ❓ Where! ❓ Where! ❓ Any sus!❓ ❓ ❓ ❓ Any sus! ❓ ❓ Where!❓ Any sus! ❓ ❓ Where!❓ ❓ Where! ❓ Where!Where! ❓ ❓ ❓ ❓ ❓ ❓ ❓ Any sus!❓ ❓ ❓ Any sus!❓ ❓ ❓ ❓ Where! ❓ Where! Where!Any sus!Where! Where! ❓ ❓ ❓ ❓ ❓ ❓ I think it was purple!👀👀👀👀👀👀👀👀👀👀It wasnt me I was in vents!!!!!!!!!!!!!!😂🤣😂🤣😂🤣😂😂😂🤣🤣🤣😂😂😂")
         copypasta1 = ("Oh my fucking god guys I am fucking fuming. So the other day at work my boss told us that he recently discovered the video game Among Us, and ever since, his behaviour has become rather concerning. He now refers to me and my coworkers as 'crewmates'. Last Wednesday, when he noticed my teenage colleague slacking off at his workstation, he yelled at him saying he was 'faking his tasks' and is 'acting sus'. I confronted my boss telling him that his behaviour lately has been egregious and immature, and he proceeded to call me an idiot and yelled kicked! The next day I caught him dancing around in his office blasting among drip from his desktop at full volume. I entered his office to kindly ask him to turn off the music since it was distracting to me and my coworkers. He looked at me angrily, telling me he has called an 'emergency meeting', instructing me to have a seat. I asked him what was the matter and he told me that I have been acting extremely 'sus'. He repeatedly yelled you're the impostor, telling me to say goodbye to my job because I have been ejected. I fucking lost my job and I dont know what to do. Please help me Reddit! I have nowhere else to turn.")
@@ -160,11 +189,13 @@ async def sus(ctx):
 
 @bot.command()
 async def roast(ctx):
+    print("Roasting", (ctx.author.name))
     response = requests.get('https://insult.mattbas.org/api/insult.txt')
     await ctx.channel.send(response.text)
 
 @bot.command()
 async def compliment(ctx):
+    print("Complimenting", (ctx.author.name))
     response = requests.get('https://complimentr.com/api')
     text = json.loads(response.text)
     await ctx.channel.send(text['compliment'])
@@ -182,28 +213,33 @@ async def daddy(ctx):
 
 @bot.command()
 async def support(ctx):
+    print("sending support discord to", (ctx.author.name))
     embed=discord.Embed(title="If you need any support, Join our Discord Server", description='https://discord.gg/zJC3twSBHy')
     await ctx.channel.send(embed=embed)
 
 @bot.command()
 async def github(ctx):
+    print("sending github link to", (ctx.author.name))
     await ctx.channel.send("Here is the Authors GitHub profile:")
     await ctx.channel.send("https://github.com/Xylo4388")
 
 @bot.command(aliases=['stop', 'shutdown'])
 @commands.check(is_owner)
 async def shut(ctx):
+    print("Stopping Lester thanks to", (ctx.author.name))
     await ctx.channel.send("Shutting myself down, cus im not horny like you teenagers.")
     await ctx.bot.logout()
 
 @bot.command()
 @commands.check(is_owner)
 async def restart(ctx):
+    print("Lester is now restarting thanks to", (ctx.author.name))
     await ctx.channel.send("My people need me. I will be back in a short period of time.")
     os.execv(sys.executable, ['python'] + sys.argv)
 
 @bot.command()
 async def cook(ctx):
+    print("sending Cook message to", (ctx.author.name))
     await ctx.channel.send("""
     Hello m'lady. *Tips Fedora*
 Would you like cookies or cake?
@@ -292,7 +328,6 @@ async def on_command_error(ctx, error):
         await ctx.channel.send("Oh, so you're a badlion client user? Sorry, but your opinion is irrelevant.")
     else:
         print("An unhandled error has occured.")
-        await ctx.channel.send(":flushed: Looks like <@569334038326804490> f*cked up something again. Pls spam his DMs so he fixes it!!")
         await ctx.channel.send("```{error}```".format(error=error))
 
 bot.run(os.getenv('TOKEN'))
