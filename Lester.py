@@ -18,27 +18,19 @@ from discord import Client
 import DiscordUtils
 from dotenv import load_dotenv
 import random
+# from discord_components import DiscordComponents, Button, ButtonStyle, InteractionType
 
 load_dotenv()
-#
-# def get_prefix(client,message):
-#     with open("prefixes.json", "r") as f:
-#         prefixes = json.load(f)
-#
-#     return prefix[str(message.guild.id)]
+
+sus = """
+:warning: **This link is Suspicious** :warning:
+"""
+notsus = """
+:shield: **This link is Safe** :shield:
+"""
 
 bot = commands.Bot(command_prefix=["l.", "L."], help_command=None)
 slash = SlashCommand(bot)
-
-# @bot.event
-# async def on_guild_join(guild):
-#     with open("prefixes.json", "r") as f:
-#         prefixes = json.load(f)
-#
-#     prefixes[str(guild.id)] = ["l.", "L."]
-#
-#     with open("prefixes.json", "w") as f:
-#         json.dump(prefixes,f)
 
 async def is_owner(ctx):
     return ctx.author.id == 569334038326804490
@@ -47,13 +39,18 @@ async def is_owner(ctx):
 @bot.event
 async def on_ready():
     await bot.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.listening, name="Dm me the word 'tomato'"))
+    # DiscordComponents(bot, change_discord_methods=True)
+
+# @bot.command()
+# async def invite(ctx):
+#     await ctx.send(type=InteractionTyple.ChannelMessageWithSource, content="Invite me to your own server!", components=[Button(style=ButtonStyle.URL, label="Invite me to your server!", url="https://bit.ly/invitelester"), Button(style=ButtonStyle.blue, label="Default Button", custom_id="button")])
 
 @bot.command()
 async def help(ctx):
     print("sending help message to", (ctx.author.name))
 
     embed1=discord.Embed(title="Help Page 1", description='Use the prefix "l." to use them!')
-    embed1.set_author(name="Version: v1.0.3", url="https://github.com/Xylo4388")
+    embed1.set_author(name="Version: v1.0.4", url="https://github.com/Xylo4388")
     embed1.add_field(name="l.help", value="Shows this list of commands.", inline=False)
     embed1.add_field(name="l.dm", value="Creates a dm with ~ Yours truly. Lester", inline=False)
     embed1.add_field(name="l.yt or l.youtube", value="Sends a link to the Authors YouTube Channel.", inline=False)
@@ -63,7 +60,7 @@ async def help(ctx):
     embed1.add_field(name="l.compliment", value="Compliments you.", inline=False)
 
     embed2=discord.Embed(title="Help Page 2", description='Use the prefix "l." to use them!')
-    embed2.set_author(name="Version: v1.0.3", url="https://github.com/Xylo4388")
+    embed2.set_author(name="Version: v1.0.4", url="https://github.com/Xylo4388")
     embed2.add_field(name="l.github", value="Gives the link to the authors GitHub", inline=False)
     embed2.add_field(name="l.shut", value="Turns me off :wink:", inline=False)
     embed2.add_field(name="l.restart", value="Will turn you on.", inline=False)
@@ -72,10 +69,11 @@ async def help(ctx):
     embed2.add_field(name="l.sus", value="Sends a suspicious message :wink:", inline=False)
 
     embed3=discord.Embed(title="Help Page 3", description='Use the prefix "l." to use them!')
-    embed3.set_author(name="Version: v1.0.3", url="https://github.com/Xylo4388")
+    embed3.set_author(name="Version: v1.0.4", url="https://github.com/Xylo4388")
     embed3.add_field(name="l.scan (link)", value="Will scan a link to check if it's suspicious (Coming Soon)", inline=False)
     embed3.add_field(name="l.info {User ID}", value="Will tell you when a member joined your server", inline=False)
     embed3.add_field(name="l.mclive", value="Will update you about the most recent Minecraft Live", inline=False)
+    embed3.add_field(name="l.yourmum", value="Will be your mum", inline=False)
 
     paginator = DiscordUtils.Pagination.CustomEmbedPaginator(ctx)
     paginator.add_reaction('⬅', "back")
@@ -83,23 +81,6 @@ async def help(ctx):
     paginator.remove_reactions = True
     embeds = [embed1, embed2, embed3]
     await paginator.run(embeds)
-
-#
-# @bot.command()
-# @commands.has_permissions(administrator = True)
-# async def prefix(ctx, prefix):
-#     with open("prefixes.json", "r") as f:
-#         prefixes = json.load(f)
-#
-#     prefix[str(guild.id)] = prefix
-#
-#     with open("prefixes.json", "w") as f:
-#         json.dump(prefixes,f)
-
-# @bot.event
-# async def on_message(ctx, msg):
-#     if msg.mentions[0] == 816151000673943613:
-#         await ctx.channel.send("My prefix is l.")
 
 @bot.command()
 @commands.cooldown(1,60,commands.BucketType.user)
@@ -125,39 +106,22 @@ async def mcl(ctx):
     print("sending Minecraft Live 2021 message to", (ctx.author.name))
     await ctx.channel.send("""
     Minecraft Live 2021 was about the 1.19 update!
-The 1.19 update is going to be called the 'Wild Update'!
-    In this update, they are going to be adding:
-        Frogs
-        Boats with Chests
-        Renewable Clay
-        Mud Blocks
-        Fireflies
-        Updating Swamps
-        The Deep Dark (The Warden and its Dungeon)
-        The Allay (Winner of the Mob Vote in Minecraft Live 2021)
-        Tadpoles
-        Bedrock Edition and Java Edition to the Xbox Game Pass
+The 1.19 update is going to be called the "Wild Update"!
+In this update, they are going to be doing the following:
+    **Adding Frogs**
+    **Adding Boats with Chests**
+    **Adding ways to get Renewable Clay**
+    **Adding Mud Blocks**
+    **Adding Fireflies**
+    **Updating Swamps**
+    **Adding The Deep Dark (The Warden and its Dungeon)**
+    **Adding The Allay (Winner of the Mob Vote in Minecraft Live 2021)**
+    **Adding Tadpoles**
+    **Adding Bedrock Edition and Java Edition to the Xbox Game Pass**
 
-More info can be found at: https://www.minecraft.net/en-us/article/minecraft-live-2021-the-recap
+More info can be found at:
+https://www.minecraft.net/en-us/article/minecraft-live-2021-the-recap
     """)
-
-# @bot.command()
-# async def scan(ctx, arg):
-#     s = re.search("(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)", arg)
-#     pattern = ''
-#     test_string = ''
-#     m = re.match(pattern, test_string)
-#     if m:
-#         await ctx.send("Scanning {}".format(arg))
-
-# @bot.event()
-# async def on_message(ctx, arg):
-#     s = re.search("(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)", arg)
-#     pattern = ''
-#     test_string = ''
-#     m = re.match(pattern, test_string)
-#     if m:
-#         await ctx.send("Scanning {}".format(arg))
 
 @bot.command()
 async def info(ctx, *, member: discord.Member):
@@ -174,8 +138,8 @@ async def info_error(ctx, error):
 async def sus(ctx):
     print("sending a suspicious message to", (ctx.author.name))
     if ctx.author.id != bot.user.id:
-        copypasta2 = ("Did someone say sus 😱😱😱 HOLY FUCKING SHIT‼️‼️‼️‼️ IS THAT A MOTHERFUCKING AMONG US REFERENCE??????!!!!!!!!!!11!1!1!1!1!1!1! 😱😱😱😱😱😱😱 AMONG US IS THE BEST FUCKING GAME 🔥🔥🔥🔥💯💯💯💯 RED IS SO SUSSSSS 🕵️🕵️🕵️🕵️🕵️🕵️🕵️🟥🟥🟥🟥🟥 COME TO MEDBAY AND WATCH ME SCAN 🏥🏥🏥🏥🏥🏥🏥🏥 🏥🏥🏥🏥 WHY IS NO ONE FIXING O2 🤬😡🤬😡🤬😡🤬🤬😡🤬🤬😡 OH YOUR CREWMATE? NAME EVERY TASK 🔫😠🔫😠🔫😠🔫😠🔫😠 Where Any sus!❓ ❓ Where!❓ ❓ Where! Any sus!❓ Where! ❓ Any sus!❓ ❓ Any sus! ❓ ❓ ❓ ❓ Where!Where!Where! Any sus!Where!Any sus Where!❓ Where! ❓ Where!Any sus❓ ❓ Any sus! ❓ ❓ ❓ ❓ ❓ ❓ Where! ❓ Where! ❓ Any sus!❓ ❓ ❓ ❓ Any sus! ❓ ❓ Where!❓ Any sus! ❓ ❓ Where!❓ ❓ Where! ❓ Where!Where! ❓ ❓ ❓ ❓ ❓ ❓ ❓ Any sus!❓ ❓ ❓ Any sus!❓ ❓ ❓ ❓ Where! ❓ Where! Where!Any sus!Where! Where! ❓ ❓ ❓ ❓ ❓ ❓ I think it was purple!👀👀👀👀👀👀👀👀👀👀It wasnt me I was in vents!!!!!!!!!!!!!!😂🤣😂🤣😂🤣😂😂😂🤣🤣🤣😂😂😂")
-        copypasta1 = ("Oh my fucking god guys I am fucking fuming. So the other day at work my boss told us that he recently discovered the video game Among Us, and ever since, his behaviour has become rather concerning. He now refers to me and my coworkers as 'crewmates'. Last Wednesday, when he noticed my teenage colleague slacking off at his workstation, he yelled at him saying he was 'faking his tasks' and is 'acting sus'. I confronted my boss telling him that his behaviour lately has been egregious and immature, and he proceeded to call me an idiot and yelled kicked! The next day I caught him dancing around in his office blasting among drip from his desktop at full volume. I entered his office to kindly ask him to turn off the music since it was distracting to me and my coworkers. He looked at me angrily, telling me he has called an 'emergency meeting', instructing me to have a seat. I asked him what was the matter and he told me that I have been acting extremely 'sus'. He repeatedly yelled you're the impostor, telling me to say goodbye to my job because I have been ejected. I fucking lost my job and I dont know what to do. Please help me Reddit! I have nowhere else to turn.")
+        copypasta1 = ("Did someone say sus 😱😱😱 HOLY FUCKING SHIT‼️‼️‼️‼️ IS THAT A MOTHERFUCKING AMONG US REFERENCE??????!!!!!!!!!!11!1!1!1!1!1!1! 😱😱😱😱😱😱😱 AMONG US IS THE BEST FUCKING GAME 🔥🔥🔥🔥💯💯💯💯 RED IS SO SUSSSSS 🕵️🕵️🕵️🕵️🕵️🕵️🕵️🟥🟥🟥🟥🟥 COME TO MEDBAY AND WATCH ME SCAN 🏥🏥🏥🏥🏥🏥🏥🏥 🏥🏥🏥🏥 WHY IS NO ONE FIXING O2 🤬😡🤬😡🤬😡🤬🤬😡🤬🤬😡 OH YOUR CREWMATE? NAME EVERY TASK 🔫😠🔫😠🔫😠🔫😠🔫😠 Where Any sus!❓ ❓ Where!❓ ❓ Where! Any sus!❓ Where! ❓ Any sus!❓ ❓ Any sus! ❓ ❓ ❓ ❓ Where!Where!Where! Any sus!Where!Any sus Where!❓ Where! ❓ Where!Any sus❓ ❓ Any sus! ❓ ❓ ❓ ❓ ❓ ❓ Where! ❓ Where! ❓ Any sus!❓ ❓ ❓ ❓ Any sus! ❓ ❓ Where!❓ Any sus! ❓ ❓ Where!❓ ❓ Where! ❓ Where!Where! ❓ ❓ ❓ ❓ ❓ ❓ ❓ Any sus!❓ ❓ ❓ Any sus!❓ ❓ ❓ ❓ Where! ❓ Where! Where!Any sus!Where! Where! ❓ ❓ ❓ ❓ ❓ ❓ I think it was purple!👀👀👀👀👀👀👀👀👀👀It wasnt me I was in vents!!!!!!!!!!!!!!😂🤣😂🤣😂🤣😂😂😂🤣🤣🤣😂😂😂")
+        copypasta2 = ("Oh my fucking god guys I am fucking fuming. So the other day at work my boss told us that he recently discovered the video game Among Us, and ever since, his behaviour has become rather concerning. He now refers to me and my coworkers as 'crewmates'. Last Wednesday, when he noticed my teenage colleague slacking off at his workstation, he yelled at him saying he was 'faking his tasks' and is 'acting sus'. I confronted my boss telling him that his behaviour lately has been egregious and immature, and he proceeded to call me an idiot and yelled kicked! The next day I caught him dancing around in his office blasting among drip from his desktop at full volume. I entered his office to kindly ask him to turn off the music since it was distracting to me and my coworkers. He looked at me angrily, telling me he has called an 'emergency meeting', instructing me to have a seat. I asked him what was the matter and he told me that I have been acting extremely 'sus'. He repeatedly yelled you're the impostor, telling me to say goodbye to my job because I have been ejected. I fucking lost my job and I dont know what to do. Please help me Reddit! I have nowhere else to turn.")
         copypasta3 = ("""
         So uh. If you're playing Among Us. On a voice call. And you're killed... why would you NOT immediately tell everyone who killed you? Isn't the goal to win if you're crew? Like if you're not gonna tell people on the voice call, why keep doing tasks? What's the point of using the voice comms at all? You're still in it when "dead". To me if a fucking person doesn't use it when they're dead they're throwing. I'd 100% tell my team who killed me if I was killed. The point is for the crew to find out who the impostor is. If you're part of the crew, you should be telling them if you know. If you're not going to do that, you're literally int'ing and throwing. So then why bother doing tasks if you don't want to win? End discussion.
         """)
@@ -186,6 +150,13 @@ async def sus(ctx):
         list = [copypasta1, copypasta2, copypasta3, copypasta4]
         randomlist = random.choice(list)
         await ctx.channel.send(randomlist)
+
+@bot.command()
+async def yourmum(ctx):
+    print("Becoming {name}'s Mum".format(name=ctx.author.name))
+    await ctx.channel.send("""
+    Please get off the computer now, you need to do the dishes. Or you're grounded.
+    """)
 
 @bot.command()
 async def roast(ctx):
@@ -244,6 +215,10 @@ async def cook(ctx):
     Hello m'lady. *Tips Fedora*
 Would you like cookies or cake?
     """)
+
+@bot.command()
+async def scan(ctx):
+    re.search("http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]")
 
 @bot.event
 async def on_message(ctx):
@@ -312,18 +287,32 @@ saying tomato does
                 *gives cake*
                 """
                 await ctx.channel.send(cake)
-            # if "@Lester" in ctx.content.lower():
-            #     prefix = """
-            #     My prefix is l.
-            #     """
-            #     await ctx.channel.send(prefix)
+            if "thankyou" in ctx.content.lower():
+                thx = """
+                You're Welcome!
+                """
+                await ctx.channel.send(thx)
+            if "hate myself" in ctx.content.lower():
+                response = requests.get('https://complimentr.com/api')
+                text = json.loads(response.text)
+                await ctx.channel.send(text['compliment'])
+            if "i wanna die" in ctx.content.lower():
+                dontdie = """
+                Please don't end this, you have a much longer life to live. It will only get better from here. You can do this :hugging:
+We all love you. If you need some help google "Help Hotlines".
+You got this bro. :fist:
+                """
+                await ctx.channel.send(dontdie)
 
     await bot.process_commands(ctx)
 
 @bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, CommandNotFound):
-        await ctx.channel.send(":sob: If you believe this command should be added, Join our Support Server, https://discord.gg/zJC3twSBHy")
+        await ctx.channel.send("""
+        :sob: ``If you believe this command should be added, Join our Support Server``
+        https://discord.gg/zJC3twSBHy
+        """)
     elif isinstance(error, CheckFailure):
         await ctx.channel.send("Oh, so you're a badlion client user? Sorry, but your opinion is irrelevant.")
     else:
@@ -331,3 +320,36 @@ async def on_command_error(ctx, error):
         await ctx.channel.send("```{error}```".format(error=error))
 
 bot.run(os.getenv('TOKEN'))
+
+#................................................. ........................................,-~~"""'~~-,,_
+#.................................................. ..................................,-~"-,:::::::::::::::::::"-,
+#.................................................. .............................,~"::::::::',::::::: :::::::::::::|',
+#.................................................. .............................|::::::,-~"'___""~~-~"':}
+#.................................................. .............................'|:::::|: : : : : : : : : : : : : :
+#.................................................. .............................|:::::|: : :-~~—: : : —-: |
+#.................................................. ............................(_"~-': : : : : : : : :
+#.................................................. ............................."'~-,|: : : : : : ~—': : : :,'-never gonna
+#.................................................. .................................|,: : : : : :-~~-: : ::/ —-give you up!
+#.................................................. ............................,-"\':\: :'~,,_: : : : : _,-'
+#.................................................. ......................__,-';;;;;\:"-,: : : :'~—~"/|
+#.................................................. .............__,-~";;;;;;/;;;;;;;\: :\: : :____/: :',__
+#.................................................. .,-~~~""_;;;;;;;;;;;;;;;;;;;;;;;;;',. ."-,:|:::::::|. . |;;;;"-,__
+#................................................../;;;;;;;;;;;;;;;;;;;;;;;;;;;;,;;;;;;;;;\. . ."|::::::::|. .,';;;;;;;;;;"-,
+#................................................,' ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;|;;;;;;;;;;;\. . .\:::::,'. ./|;;;;;;;;;;;;;|
+#.............................................,-";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\;;;;;;;;;;;',: : __|. . .|;;;;;;;;;,';;|
+#........................................../;;;;;;;;;;;;;;;;;;;;;;;;;;|;;;;;;;;;;;;;;\;;;;;;;; ;;;\. .|:::|. . . |;;;;;;;;|/
+#...........................................,-";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;',;;;;;;; ;;;; \. . |:::|. . .",;;;;;;;;|;;/
+#......................................../;;,-';;;;;;;;;;;;;;;;;;;;;;,';;;;;;;;;;;;;;;;;,;;;;;;; ;;;|. .\:/. . . .|;;;;;;;;|
+#......................................./;;;;;;;;;;;;;;;;;;;;;;;;;;,;;;;;;;;;;;;;;;;;;;;;;; ;;;;;;;",: |;|. . . . \;;;;;;;|
+#....................................,~";;;;;;;;;; ;;;;;;;;;;;,-";;;;;;;;;;;;;;;;;;;;;;;;;;\;;;;;;;;|.|;|. . . . .|;;;;;;;|
+#................................,~";;;;;;;;;;;;;; ;;;;;;;;,-';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;',;;;;;;| |:|. . . . |\;;;;;;;|
+#...............................,';;;;;;;;;;;;;;;;; ;;;;;;;/;;;,-';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;,;;;;;| |:|. . . .'|;;',;;;;;|
+#..............................|;,-';;;;;;;;;;;;;;;;;;;,-';;;,-';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;,;;;;| |:|. . .,';;;;;',;;;;|_
+#............................../;;;;;;;;;;;;;;;;;,-'_;;;;;;,';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;|;;; ;|.|:|. . .|;;;;;;;|;;;;|""~-,
+#............................/;;;;;;;;;;;;;;;;;;/_",;;;,';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ,;;| |:|. . ./;;;;;;;;|;;;|;;;;;;|-,,__
+#........................../;;;;;;;;;;;;;;;;;,-'...|;;,;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;;;;| |:|._,-';;;;;;;;;|;;;;|;;;;;;;;;;;"'-,_
+#......................../;;;;;;;;;;;;;;;;,-'....,';;,;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;;;;;;;|.|:|::::"'~-~"'||;;;;;|;;;;;;;;;;,-~""~-,
+#......................,';;;;;;;;;;;;;;;;,'....../;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;|.|:|::::::::::::::|;;;;;',;;;;;;;;;"-,: : : : : :"'~-,:"'~~-,
+#...................../;;;;;;;;;;;;;;;,-'......,';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;;;;;;;;;;;|:|:|::::::::::::::',;;;;;;|_""~-,,-~—,,___,-~~"'__"~-
+#..................,-';;;;;;;;;;;;;;;,'......../;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;;;|:|:|:::::::::::::::|;;;;;;|.................. ..."-,\_"-,"-,"~
+#................../;;;;;;;;;;;;;;;;/.......,-';;;;;;;;;;;;;;;;;Scroll Up;;;;;;;;;;;;;;;;;; ;;;;;;;|:|:|:::::::::::::::|;;;;;|................
