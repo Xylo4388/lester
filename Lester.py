@@ -18,7 +18,7 @@ from discord import Client
 import DiscordUtils
 from dotenv import load_dotenv
 import random
-# from discord_components import DiscordComponents, Button, ButtonStyle, InteractionType
+from discord_components import DiscordComponents, Button, ButtonStyle
 
 load_dotenv()
 
@@ -30,7 +30,9 @@ notsus = """
 """
 
 bot = commands.Bot(command_prefix=["l.", "L."], help_command=None)
+e = Client()
 slash = SlashCommand(bot)
+ddb = DiscordComponents(e)
 
 async def is_owner(ctx):
     return ctx.author.id == 569334038326804490
@@ -39,11 +41,21 @@ async def is_owner(ctx):
 @bot.event
 async def on_ready():
     await bot.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.listening, name="Dm me the word 'tomato'"))
-    # DiscordComponents(bot, change_discord_methods=True)
 
-# @bot.command()
-# async def invite(ctx):
-#     await ctx.send(type=InteractionTyple.ChannelMessageWithSource, content="Invite me to your own server!", components=[Button(style=ButtonStyle.URL, label="Invite me to your server!", url="https://bit.ly/invitelester"), Button(style=ButtonStyle.blue, label="Default Button", custom_id="button")])
+@bot.command()
+async def invite(ctx):
+    await ctx.channel.send(
+    "Invite me to your own server!!",
+    components=[
+    Button(style=ButtonStyle.URL, label="Invite me To your own server!", url="https://bit.ly/invitelester"),
+    ],
+    )
+# @bot.event
+# async def on_message(message):
+#     response = await message.channel.send("discord.gg")
+#     await message.delete()
+#     await response.delete()
+
 
 @bot.command()
 async def help(ctx):
@@ -73,7 +85,8 @@ async def help(ctx):
     embed3.add_field(name="l.scan (link)", value="Will scan a link to check if it's suspicious (Coming Soon)", inline=False)
     embed3.add_field(name="l.info {User ID}", value="Will tell you when a member joined your server", inline=False)
     embed3.add_field(name="l.mclive", value="Will update you about the most recent Minecraft Live", inline=False)
-    embed3.add_field(name="l.yourmum", value="Will be your mum", inline=False)
+    embed3.add_field(name="l.yourmum", value="Will become your mum", inline=False)
+    embed3.add_field(name="l.invite", value="Invite me to Your own Server!", inline=False)
 
     paginator = DiscordUtils.Pagination.CustomEmbedPaginator(ctx)
     paginator.add_reaction('⬅', "back")
@@ -81,6 +94,14 @@ async def help(ctx):
     paginator.remove_reactions = True
     embeds = [embed1, embed2, embed3]
     await paginator.run(embeds)
+
+@bot.event
+async def on_message(message):
+    if "suggestion:" in message.content.lower():
+        emoji1 = '✅'
+        emoji2 = '❌'
+        await message.add_reaction(emoji1)
+        await message.add_reaction(emoji2)
 
 @bot.command()
 @commands.cooldown(1,60,commands.BucketType.user)
@@ -128,11 +149,6 @@ async def info(ctx, *, member: discord.Member):
     print("sending info message to", (ctx.author.name))
     fmt = '{0} joined {0.guild.name} on {0.joined_at} and has {1} role(s).'
     await ctx.send(fmt.format(member, len(member.roles)-1))
-
-@info.error
-async def info_error(ctx, error):
-    if isinstance(error, commands.BadArgument):
-        await ctx.send('This member is not in this server. Please mention an actual member!')
 
 @bot.command()
 async def sus(ctx):
@@ -185,8 +201,12 @@ async def daddy(ctx):
 @bot.command()
 async def support(ctx):
     print("sending support discord to", (ctx.author.name))
-    embed=discord.Embed(title="If you need any support, Join our Discord Server", description='https://discord.gg/zJC3twSBHy')
-    await ctx.channel.send(embed=embed)
+    await ctx.channel.send(
+    "Join our Support Server!",
+    components=[
+    Button(style=ButtonStyle.URL, label="Join Here!", url="https://discord.gg/zJC3twSBHy"),
+    ],
+    )
 
 @bot.command()
 async def github(ctx):
@@ -214,11 +234,21 @@ async def cook(ctx):
     await ctx.channel.send("""
     Hello m'lady. *Tips Fedora*
 Would you like cookies or cake?
-    """)
+    """,
+    components=[[
+    Button(style=ButtonStyle.blue, label="Cookies"), Button(style=ButtonStyle.red, label="Cake"),
+    ]],
+    )
+@bot.event
+async def on_button_click(interaction):
+    if interaction.component.label.startswith("Cookies"):
+        await interaction.channel.send('*gives cookies*')
+    if interaction.component.label.startswith("Cake"):
+        await interaction.channel.send('*gives cake*')
 
-@bot.command()
-async def scan(ctx):
-    re.search("http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]")
+# @bot.command()
+# async def scan(ctx):
+#     re.search("http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]")
 
 @bot.event
 async def on_message(ctx):
@@ -320,36 +350,3 @@ async def on_command_error(ctx, error):
         await ctx.channel.send("```{error}```".format(error=error))
 
 bot.run(os.getenv('TOKEN'))
-
-#................................................. ........................................,-~~"""'~~-,,_
-#.................................................. ..................................,-~"-,:::::::::::::::::::"-,
-#.................................................. .............................,~"::::::::',::::::: :::::::::::::|',
-#.................................................. .............................|::::::,-~"'___""~~-~"':}
-#.................................................. .............................'|:::::|: : : : : : : : : : : : : :
-#.................................................. .............................|:::::|: : :-~~—: : : —-: |
-#.................................................. ............................(_"~-': : : : : : : : :
-#.................................................. ............................."'~-,|: : : : : : ~—': : : :,'-never gonna
-#.................................................. .................................|,: : : : : :-~~-: : ::/ —-give you up!
-#.................................................. ............................,-"\':\: :'~,,_: : : : : _,-'
-#.................................................. ......................__,-';;;;;\:"-,: : : :'~—~"/|
-#.................................................. .............__,-~";;;;;;/;;;;;;;\: :\: : :____/: :',__
-#.................................................. .,-~~~""_;;;;;;;;;;;;;;;;;;;;;;;;;',. ."-,:|:::::::|. . |;;;;"-,__
-#................................................../;;;;;;;;;;;;;;;;;;;;;;;;;;;;,;;;;;;;;;\. . ."|::::::::|. .,';;;;;;;;;;"-,
-#................................................,' ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;|;;;;;;;;;;;\. . .\:::::,'. ./|;;;;;;;;;;;;;|
-#.............................................,-";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\;;;;;;;;;;;',: : __|. . .|;;;;;;;;;,';;|
-#........................................../;;;;;;;;;;;;;;;;;;;;;;;;;;|;;;;;;;;;;;;;;\;;;;;;;; ;;;\. .|:::|. . . |;;;;;;;;|/
-#...........................................,-";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;',;;;;;;; ;;;; \. . |:::|. . .",;;;;;;;;|;;/
-#......................................../;;,-';;;;;;;;;;;;;;;;;;;;;;,';;;;;;;;;;;;;;;;;,;;;;;;; ;;;|. .\:/. . . .|;;;;;;;;|
-#......................................./;;;;;;;;;;;;;;;;;;;;;;;;;;,;;;;;;;;;;;;;;;;;;;;;;; ;;;;;;;",: |;|. . . . \;;;;;;;|
-#....................................,~";;;;;;;;;; ;;;;;;;;;;;,-";;;;;;;;;;;;;;;;;;;;;;;;;;\;;;;;;;;|.|;|. . . . .|;;;;;;;|
-#................................,~";;;;;;;;;;;;;; ;;;;;;;;,-';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;',;;;;;;| |:|. . . . |\;;;;;;;|
-#...............................,';;;;;;;;;;;;;;;;; ;;;;;;;/;;;,-';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;,;;;;;| |:|. . . .'|;;',;;;;;|
-#..............................|;,-';;;;;;;;;;;;;;;;;;;,-';;;,-';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;,;;;;| |:|. . .,';;;;;',;;;;|_
-#............................../;;;;;;;;;;;;;;;;;,-'_;;;;;;,';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;|;;; ;|.|:|. . .|;;;;;;;|;;;;|""~-,
-#............................/;;;;;;;;;;;;;;;;;;/_",;;;,';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ,;;| |:|. . ./;;;;;;;;|;;;|;;;;;;|-,,__
-#........................../;;;;;;;;;;;;;;;;;,-'...|;;,;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;;;;| |:|._,-';;;;;;;;;|;;;;|;;;;;;;;;;;"'-,_
-#......................../;;;;;;;;;;;;;;;;,-'....,';;,;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;;;;;;;|.|:|::::"'~-~"'||;;;;;|;;;;;;;;;;,-~""~-,
-#......................,';;;;;;;;;;;;;;;;,'....../;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;|.|:|::::::::::::::|;;;;;',;;;;;;;;;"-,: : : : : :"'~-,:"'~~-,
-#...................../;;;;;;;;;;;;;;;,-'......,';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;;;;;;;;;;;|:|:|::::::::::::::',;;;;;;|_""~-,,-~—,,___,-~~"'__"~-
-#..................,-';;;;;;;;;;;;;;;,'......../;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;;;|:|:|:::::::::::::::|;;;;;;|.................. ..."-,\_"-,"-,"~
-#................../;;;;;;;;;;;;;;;;/.......,-';;;;;;;;;;;;;;;;;Scroll Up;;;;;;;;;;;;;;;;;; ;;;;;;;|:|:|:::::::::::::::|;;;;;|................
